@@ -16,8 +16,8 @@
         <textarea name="mapper" id="mapper" rows="10" cols="50"></textarea><br />
         <label for="reducer">Reducer:</label><br />
         <textarea name="reducer" id="reducer" rows="10" cols="50"></textarea><br />
-        <input id="submit" type="submit" value="Submit" /> 
-        <input id="test" type="submit" value="Test" /> 
+        <input id="submit" type="submit" value="Submit" />
+        <input id="test" type="submit" value="Test" />
     </form>
 
     <script type="text/javascript">
@@ -25,7 +25,7 @@
             var win = window.open(url, '_blank');
             win.focus();
         }
-       
+
         $('form input[type=submit]').click(function() {
             $('input[type=submit]', $(this).parents('form')).removeAttr('clicked');
             $(this).attr('clicked', 'true');
@@ -34,7 +34,7 @@
         $(document).ready(function() {
             $('#name').val('guillet');
             $('#input_text').val('test test prout pouet test');
-            $('#mapper').val("function mapper(key, value) { var words = key.split(' '); for (var i = 0; i < words.length; ++i) { Wmr.emit(words[i],  '1');} };");
+            $('#mapper').val("function mapper(key, value) { var words = key.split(' '); for (var i = 0; i < words.length; ++i) { Wmr.emit(words[i],  '1');} }");
             $('#reducer').val("function reducer(key, values) { var count = 0; for (var i = 0; i < values.length; ++i) { count += parseInt(values[i], 10); } Wmr.emit(key, count.toString()); }");
            $('#form').submit(function(e) {
                 e.preventDefault();
@@ -45,7 +45,7 @@
                 $.post(newJobURL, formData, function(data) {
                     openInNewTab(server + data);
                 });
-           });    
+           });
         });
     </script>
 </body>
