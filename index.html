@@ -1,0 +1,52 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>WMR Remote!</title>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+</head>
+<body>
+    <p>WMR Remote!</p>
+    <form id="form" action="index.html" method="post">
+        <label for="name">Name:</label><br />
+        <input type="text" name="name" id="name" /><br />
+        <label for="input_text">Input:</label><br />
+        <textarea name="input_text" id="input_text" rows="18" cols="70"></textarea><br />
+        <label for="mapper">Mapper:</label><br />
+        <textarea name="mapper" id="mapper" rows="10" cols="50"></textarea><br />
+        <label for="reducer">Reducer:</label><br />
+        <textarea name="reducer" id="reducer" rows="10" cols="50"></textarea><br />
+        <input id="submit" type="submit" value="Submit" /> 
+        <input id="test" type="submit" value="Test" /> 
+    </form>
+
+    <script type="text/javascript">
+        function openInNewTab(url) {
+            var win = window.open(url, '_blank');
+            win.focus();
+        }
+       
+        $('form input[type=submit]').click(function() {
+            $('input[type=submit]', $(this).parents('form')).removeAttr('clicked');
+            $(this).attr('clicked', 'true');
+        });
+
+        $(document).ready(function() {
+            $('#name').val('guillet');
+            $('#input_text').val('test test prout pouet test');
+            $('#mapper').val("function mapper(key, value) { var words = key.split(' '); for (var i = 0; i < words.length; ++i) { Wmr.emit(words[i],  '1');} };");
+            $('#reducer').val("function reducer(key, values) { var count = 0; for (var i = 0; i < values.length; ++i) { count += parseInt(values[i], 10); } Wmr.emit(key, count.toString()); }");
+           $('#form').submit(function(e) {
+                e.preventDefault();
+                var submit = ($('input[type=submit][clicked=true]').val() == 'Submit') ?  'Submit' : 'Test';
+                var formData = $(this).serialize() + '&' + 'submit=' + submit;
+                var server = 'http://localhost:8001'
+                var newJobURL = server + '/remote/jobs/new/';
+                $.post(newJobURL, formData, function(data) {
+                    openInNewTab(server + data);
+                });
+           });    
+        });
+    </script>
+</body>
+</html>
